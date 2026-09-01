@@ -5,39 +5,8 @@ text/tables/visual pages, applies contextual retrieval, indexes dense and sparse
 in Qdrant, reranks evidence, streams answers, and shows clickable citations with PDF
 page previews and chunk highlighting.
 
-The app is intentionally domain-neutral even though the original local demo used Boeing
-annual and sustainability reports. Upload your own PDFs through the UI.
-
 ```mermaid
 flowchart TD
-    A["Boeing PDF Corpus"] --> B["MarkItDown Page-Level Parsing"]
-
-    B --> C["Extract Markdown Content"]
-    C --> D1["Text Blocks"]
-    C --> D2["Markdown Tables"]
-    C --> D3["Images / Visual Pages"]
-
-    D3 --> E["Nebius VLM<br/>Qwen/Qwen2.5-VL-72B-Instruct"]
-    E --> F["Image/OCR Text Chunks"]
-
-    D1 --> G["Chunk Builder"]
-    D2 --> G
-    F --> G
-
-    G --> H["Metadata Enrichment<br/>PDF, Page, Year, Report Type, Section, Content Type"]
-
-    H --> I["Contextual Augmentation"]
-    I --> J["raw_text"]
-    I --> K["contextual_text<br/>Generated Context + Raw Chunk"]
-
-    K --> L1["Dense Embeddings<br/>Nebius Qwen/Qwen3-Embedding-8B"]
-    K --> L2["Sparse Vectors<br/>Qdrant/FastEmbed BM25"]
-
-    L1 --> M["Qdrant Hybrid Collection"]
-    L2 --> M
-    J --> M
-    H --> M
-
     N["User Question"] --> O["Query API"]
 
     O --> P1["Dense Query Embedding"]
@@ -156,12 +125,6 @@ fallback embeddings and extractive answers, but retrieval/answer quality will be
 
 ## Useful Commands
 
-```bash
-boeing-rag init-db
-boeing-rag stats
-boeing-rag ask "What does the corpus say about emissions?"
-```
-
 Run the backend:
 
 ```bash
@@ -183,9 +146,6 @@ rendered pages, and parsed artifacts.
 Recommended services:
 
 - React frontend hosting
-- FastAPI backend
-- Postgres
 - Qdrant
 - Redis-backed worker queue
-- Object storage
 - Nebius/OpenAI-compatible inference endpoint
